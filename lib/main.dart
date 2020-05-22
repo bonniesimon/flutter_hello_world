@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                   // width: double.infinity,
                   // color: Color(0xFFBCA876),
                   child: Column(
-                children: [HeroSection(), BioSection()],
+                children: [HeroSection(), BioSection(), LanguagesSection()],
               )),
             )));
   }
@@ -115,3 +115,37 @@ class BioSection extends StatelessWidget {
   }
 }
 
+class LanguagesSection extends StatefulWidget {
+  @override
+  _LanguagesSectionState createState() => _LanguagesSectionState();
+}
+
+class _LanguagesSectionState extends State<LanguagesSection> {
+  int counter = 0;
+
+  void incrementCounter(){
+    setState(() {
+      counter = counter + 1;
+    });
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Palette.dark,
+      width: double.infinity,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.0),
+        child: Column(
+          children: <Widget>[
+            Text('$counter', style: TextStyle(color: Palette.gold)),
+            RaisedButton(
+              onPressed: incrementCounter,
+              child: Text("+")
+              )
+          ],
+        ),
+      ),
+    );
+  }
+}
