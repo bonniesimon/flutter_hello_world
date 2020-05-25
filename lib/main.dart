@@ -11,30 +11,74 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Palette.gold,
+            backgroundColor: Palette.dark,
             appBar: AppBar(
               elevation: 0,
-              backgroundColor: Palette.dark,
+              backgroundColor: Palette.gold,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
                     'Bonnie Simon',
-                    style: TextStyle(color: Color(0xFFBCA876)),
+                    style: TextStyle(color: Palette.dark),
                   )
                 ],
               ),
             ),
-            body: SingleChildScrollView(
-              child: Container(
-                  //*Fixed the SingleChildScrollView vanishing all my content. It was cuz of the height and width props
-                  // height: double.infinity,
-                  // width: double.infinity,
-                  // color: Color(0xFFBCA876),
-                  child: Column(
-                children: [HeroSection(), BioSection(), LanguagesSection()],
-              )),
-            )));
+            body: TodoListPage()));
+  }
+}
+
+class TodoListPage extends StatelessWidget {
+  List<String> quotes = [
+    "This world is so cool!",
+    "Hope I'm curious forever",
+    "I am what the world wants me to be",
+    "Killing a killer does not change "
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ListView.separated(
+        itemCount: quotes.length,
+         separatorBuilder: (BuildContext context, int index) { 
+            return Divider();
+         },
+        itemBuilder: (context, index) {
+          return Container(
+              padding: EdgeInsets.symmetric(horizontal:10.0),
+            height: 80,
+            color: Palette.dark,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('${quotes[index]}', style: TextStyle(color: Palette.gold),textAlign: TextAlign.left,),
+                Icon(Icons.delete_forever, color: Colors.red,)
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class HomePagePortfolio extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+          //*Fixed the SingleChildScrollView vanishing all my content. It was cuz of the height and width props
+          // height: double.infinity,
+          // width: double.infinity,
+          // color: Color(0xFFBCA876),
+          child: Column(
+        children: [
+          HeroSection(),
+          BioSection(),
+        ],
+      )),
+    );
   }
 }
 
@@ -132,15 +176,15 @@ class _LanguagesSectionState extends State<LanguagesSection> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-          itemCount : quotes.length,
-          itemBuilder: (BuildContext context,int index){
-              return Container(
-                  height: 50,
-                  color: Palette.gold,
-                  child: Text('${quotes[index]}',style:TextStyle(color:Palette.dark)),
-              );
-          },
-
+        itemCount: quotes.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 50,
+            color: Palette.gold,
+            child:
+                Text('${quotes[index]}', style: TextStyle(color: Palette.dark)),
+          );
+        },
       ),
     );
   }
