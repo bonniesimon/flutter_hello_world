@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Welcome to Flutter',
+        title: 'Bonnie Simon',
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -121,30 +121,26 @@ class LanguagesSection extends StatefulWidget {
 }
 
 class _LanguagesSectionState extends State<LanguagesSection> {
-  int counter = 0;
+  List<String> quotes = [
+    "This world is so cool!",
+    "Hope I'm curious forever",
+    "I am what the world wants me to be",
+    "Killing a killer does not change the total number of killers"
+  ];
 
-  void incrementCounter(){
-    setState(() {
-      counter = counter + 1;
-    });
-  }
-  
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Palette.dark,
-      width: double.infinity,
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12.0),
-        child: Column(
-          children: <Widget>[
-            Text('$counter', style: TextStyle(color: Palette.gold)),
-            RaisedButton(
-              onPressed: incrementCounter,
-              child: Text("+")
-              )
-          ],
-        ),
+      child: ListView.builder(
+          itemCount : quotes.length,
+          itemBuilder: (BuildContext context,int index){
+              return Container(
+                  height: 50,
+                  color: Palette.gold,
+                  child: Text('${quotes[index]}',style:TextStyle(color:Palette.dark)),
+              );
+          },
+
       ),
     );
   }
