@@ -29,34 +29,61 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
+  @override
+  _TodoListPageState createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
   List<String> quotes = [
     "This world is so cool!",
     "Hope I'm curious forever",
     "I am what the world wants me to be",
     "Killing a killer does not change "
   ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView.separated(
         itemCount: quotes.length,
-         separatorBuilder: (BuildContext context, int index) { 
-            return Divider();
-         },
-        itemBuilder: (context, index) {
-          return Container(
-              padding: EdgeInsets.symmetric(horizontal:10.0),
-            height: 80,
-            color: Palette.dark,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('${quotes[index]}', style: TextStyle(color: Palette.gold),textAlign: TextAlign.left,),
-                Icon(Icons.delete_forever, color: Colors.red,)
-              ],
-            ),
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider(
+            color: Palette.gold,
           );
+        },
+        itemBuilder: (context, index) {
+          var quote = quotes[index];
+          return Dismissible(
+              key: ValueKey(quote),
+              onDismissed: (direction) {
+                setState(() {
+                  quotes.removeAt(index);
+                });
+                Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Container(
+                        color: Palette.gold,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text("Deleted", style: TextStyle(color:Palette.dark),),
+                            Icon(Icons.delete_forever, color: Palette.dark)
+                          ],
+                        ))));
+              },
+              child: ListTile(
+                title: Text(
+                  '${quotes[index]}',
+                  style: TextStyle(color: Palette.gold),
+                  textAlign: TextAlign.left,
+                ),
+                trailing: Icon(
+                  Icons.delete_sweep,
+                  color: Palette.gold,
+                ),
+              ));
         },
       ),
     );
