@@ -9,23 +9,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Bonnie Simon',
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: Palette.dark,
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Palette.gold,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Bonnie Simon',
-                    style: TextStyle(color: Palette.dark),
-                  )
-                ],
+        home: SafeArea(
+          child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: Palette.dark,
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Palette.gold,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '*To.Doist',
+                      style: TextStyle(color: Palette.dark),
+                    )
+                  ],
+                ),
               ),
-            ),
-            body: TodoListPage()));
+              body: TodoListPage()),
+        ));
   }
 }
 
@@ -35,6 +37,7 @@ class TodoListPage extends StatefulWidget {
 }
 
 class _TodoListPageState extends State<TodoListPage> {
+  TextEditingController _textController = TextEditingController();
   List<String> quotes = [
     "This world is so cool!",
     "Hope I'm curious forever",
@@ -44,48 +47,80 @@ class _TodoListPageState extends State<TodoListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.separated(
-        itemCount: quotes.length,
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            color: Palette.gold,
-          );
-        },
-        itemBuilder: (context, index) {
-          var quote = quotes[index];
-          return Dismissible(
-              key: ValueKey(quote),
-              onDismissed: (direction) {
-                setState(() {
-                  quotes.removeAt(index);
-                });
-                Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Container(
-                        color: Palette.gold,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text("Deleted", style: TextStyle(color:Palette.dark),),
-                            Icon(Icons.delete_forever, color: Palette.dark)
-                          ],
-                        ))));
-              },
-              child: ListTile(
-                title: Text(
-                  '${quotes[index]}',
-                  style: TextStyle(color: Palette.gold),
-                  textAlign: TextAlign.left,
-                ),
-                trailing: Icon(
-                  Icons.delete_sweep,
+    return Column(
+      children: <Widget>[
+        TextField(
+          cursorColor: Palette.gold,
+          style: TextStyle(color: Palette.white),
+          decoration: InputDecoration(
+            hintText: "Add Todo",
+            hintStyle: TextStyle(color: Palette.white),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              borderSide: BorderSide(
+                color: Palette.gold,
+                style: BorderStyle.none,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:BorderSide(color: Palette.gold)
+            )
+          ),
+          controller: _textController,
+          onSubmitted: (value) {
+            setState(() {
+              quotes.add(value);
+              _textController.clear();
+            });
+          },
+        ),
+        Expanded(
+          child: Container(
+            child: ListView.separated(
+              itemCount: quotes.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
                   color: Palette.gold,
-                ),
-              ));
-        },
-      ),
+                );
+              },
+              itemBuilder: (context, index) {
+                var quote = quotes[index];
+                return Dismissible(
+                    key: ValueKey(quote),
+                    onDismissed: (direction) {
+                      setState(() {
+                        quotes.removeAt(index);
+                      });
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Palette.gold,
+                          content: Container(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Deleted",
+                                style: TextStyle(color: Palette.dark),
+                              ),
+                              Icon(Icons.delete_forever, color: Palette.dark)
+                            ],
+                          ))));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        '${quotes[index]}',
+                        style: TextStyle(color: Palette.gold),
+                        textAlign: TextAlign.left,
+                      ),
+                      trailing: Icon(
+                        Icons.delete_sweep,
+                        color: Palette.gold,
+                      ),
+                    ));
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
