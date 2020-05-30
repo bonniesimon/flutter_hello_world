@@ -10,26 +10,29 @@ class MyApp extends StatelessWidget {
         title: 'Bonnie Simon',
         debugShowCheckedModeBanner: false,
         home: SafeArea(
-          child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: Palette.dark,
-              appBar: AppBar(
-                elevation: 0,
-                backgroundColor: Palette.gold,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      '*To.Doist',
-                      style: TextStyle(color: Palette.dark),
-                    )
-                  ],
-                ),
-              ),
-              body: TodoListPage()),
-        ));
+            child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Palette.dark,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Palette.gold,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '*To.Doist',
+                  style: TextStyle(color: Palette.dark),
+                )
+              ],
+            ),
+          ),
+          body: TodoListPage(),
+          floatingActionButton: MyFloatingActionButton(),
+        )));
   }
 }
+
+class AddFloatingActionButton {}
 
 class TodoListPage extends StatefulWidget {
   @override
@@ -53,19 +56,17 @@ class _TodoListPageState extends State<TodoListPage> {
           cursorColor: Palette.gold,
           style: TextStyle(color: Palette.white),
           decoration: InputDecoration(
-            hintText: "Add Todo",
-            hintStyle: TextStyle(color: Palette.white),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-              borderSide: BorderSide(
-                color: Palette.gold,
-                style: BorderStyle.none,
+              hintText: "Add Todo",
+              hintStyle: TextStyle(color: Palette.white),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+                borderSide: BorderSide(
+                  color: Palette.gold,
+                  style: BorderStyle.none,
+                ),
               ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide:BorderSide(color: Palette.gold)
-            )
-          ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Palette.gold))),
           controller: _textController,
           onSubmitted: (value) {
             setState(() {
@@ -121,6 +122,53 @@ class _TodoListPageState extends State<TodoListPage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class MyFloatingActionButton extends StatefulWidget {
+  @override
+  _MyFloatingActionButtonState createState() => _MyFloatingActionButtonState();
+}
+
+class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add_circle_outline),
+      backgroundColor: Palette.gold,
+      foregroundColor: Palette.dark,
+      onPressed: () {
+        showBottomSheet(
+            context: context,
+            builder: (context) => Container(
+                  color: Palette.gold,
+                  height: 500,
+                  child: TextField(
+                    cursorColor: Palette.gold,
+                    style: TextStyle(color: Palette.white),
+                    decoration: InputDecoration(
+                        hintText: "Add Todo",
+                        hintStyle: TextStyle(color: Palette.white),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          borderSide: BorderSide(
+                            color: Palette.gold,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Palette.gold))),
+                    controller: _textController,
+                    onSubmitted: (value) {
+                      setState(() {
+                        quotes.add(value);
+                        _textController.clear();
+                      });
+                    },
+                  ),
+                ));
+      },
     );
   }
 }
